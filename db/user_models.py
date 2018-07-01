@@ -26,12 +26,12 @@ class User( DatabaseObject ):
                 'salt':REQUIRED,
                 'study_id':REQUIRED,
                 'os_type': None }
-    
+    # Runshan: Add one parameter user_number, replace randomly generated userid with "SG" + "XXXX"
     @classmethod
-    def create(cls, study_id):
+    def create(cls, study_id, user_number=100):
         """ Creates a new patient with random patient_id and password."""
-        patient_id = generate_easy_alphanumeric_string()
-        if User(patient_id): cls.create(study_id) #if user exists, recurse.
+        patient_id = "SG" + str(user_number).zfill(4)
+        if User(patient_id): cls.create(study_id, user_number+1) #if user exists, recurse.
 
         password, password_hash, salt = generate_user_password_and_salt()
 

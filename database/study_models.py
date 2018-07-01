@@ -245,17 +245,20 @@ class Participant(AbstractPasswordUser):
         """
         Creates a new participant with randomly generated patient_id and password.
         """
-
+	# Runshan: change patient id rule
+	existing_count = cls.objects.count()
+	patient_id = 'SG' +str(100 + existing_count).zfill(5)
         # Ensure that a unique patient_id is generated. If it is not after
         # twenty tries, raise an error.
-        patient_id = generate_easy_alphanumeric_string()
-        for _ in xrange(20):
-            if not cls.objects.filter(patient_id=patient_id).exists():
+
+        # patient_id = generate_easy_alphanumeric_string()
+        # for _ in xrange(20):
+            # if not cls.objects.filter(patient_id=patient_id).exists():
                 # If patient_id does not exist in the database already
-                break
-            patient_id = generate_easy_alphanumeric_string()
-        else:
-            raise RuntimeError('Could not generate unique Patient ID for new Participant.')
+                # break
+            # patient_id = generate_easy_alphanumeric_string()
+        # else:
+            #raise RuntimeError('Could not generate unique Patient ID for new Participant.')
 
         # Create a Participant, and generate for them a password
         participant = cls(patient_id=patient_id, **kwargs)

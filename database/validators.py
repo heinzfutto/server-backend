@@ -42,7 +42,7 @@ class LengthValidator(object):
 # the CharField, but the validator ensures that only certain characters are present
 # in the field value. If the ID or hashes are changed, be sure to modify or create a new
 # validator accordingly.
-id_validator = RegexValidator('^[1-9a-z]+$', message='This field can only contain characters 1-9 and a-z.')
+id_validator = RegexValidator('^[0-9a-zA-Z]+$', message='This field can only contain characters 0-9, a-z and A-Z.')
 # Base 64 encodings can end in up to two = symbols for padding.
 url_safe_base_64_validator = RegexValidator('^[0-9a-zA-Z_\-]+={0,2}$')
 standard_base_64_validator = RegexValidator('^[0-9a-zA-Z+/]+={0,2}$')

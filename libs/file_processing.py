@@ -34,8 +34,9 @@ def process_file_chunks():
     """
     # Initialize the process and ensure there is no other process running at the same time
     error_handler = ErrorHandler()
-    if FileProcessLock.islocked():
-        raise ProcessingOverlapError("Data processing overlapped with a previous data indexing run.")
+    # if FileProcessLock.islocked():
+    #    raise ProcessingOverlapError("Data processing overlapped with a previous data indexing run.")
+    FileProcessLock.unlock()
     FileProcessLock.lock()
 
     try:
