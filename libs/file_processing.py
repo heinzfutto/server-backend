@@ -117,7 +117,7 @@ def do_process_user_file_chunks(count, error_handler, skip_count, participant):
             # lumped together into data['exception']. Raise them here to the error handler and
             # move to the next file.
             if data['exception']:
-                print("\n" + data['ftp']['s3_file_path'])
+                print("\n Error Occured: " + data['ftp']['s3_file_path'])
                 print(data['traceback'])
                 ################################################################
                 # YOU ARE SEEING THIS EXCEPTION WITHOUT A STACK TRACE
@@ -433,6 +433,9 @@ def process_csv_data(data):
 
     header = ",".join([column_name.strip() for column_name in header.split(",")])
     if csv_rows_list:
+        print("Object Id: " + data['ftp']['study'].object_id)
+        print("Patient Id: " + data['ftp']['participant'].patient_id)
+        print("Data Type: " + data["data_type"])
         return (
             # return item 1: the data as a defaultdict
             binify_csv_rows(

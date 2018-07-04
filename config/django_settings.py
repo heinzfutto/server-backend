@@ -48,6 +48,8 @@ else:
 TIME_ZONE = 'UTC'
 USE_TZ = True
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
 INSTALLED_APPS = [
     'database.apps.DatabaseConfig',
     'django_extensions',
