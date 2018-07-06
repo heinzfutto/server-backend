@@ -292,3 +292,21 @@ def get_latest_surveys(OS_API=""):
     participant = Participant.objects.get(patient_id=request.values['patient_id'])
     study = participant.study
     return json.dumps(study.get_surveys_for_study())
+
+
+################################################################################
+######################### Fetch Params From Server #############################
+################################################################################
+
+
+@mobile_api.route('/get_params', methods=['GET'])
+@mobile_api.route('/get_params/ios/', methods=['GET'])
+@determine_os_api
+def get_params(OS_API=""):
+    study = Study.objects.get(id=2)
+    params = study.as_dict()
+    params.update(study.get_study_device_settings().as_dict())
+    params['last_updated'] = str(params['last_updated'])
+    params['created_on'] = str(params['created_on'])
+    del params['study']
+    return json.dumps(params)
