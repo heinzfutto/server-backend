@@ -299,8 +299,8 @@ def get_latest_surveys(OS_API=""):
 ################################################################################
 
 
-@mobile_api.route('/get_params', methods=['GET'])
-@mobile_api.route('/get_params/ios/', methods=['GET'])
+@mobile_api.route('/get_params', methods=['GET','POST'])
+@mobile_api.route('/get_params/ios/', methods=['GET','POST'])
 @determine_os_api
 def get_params(OS_API=""):
     study = Study.objects.get(id=2)
