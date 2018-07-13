@@ -289,6 +289,7 @@ def contains_valid_extension(file_name):
 @determine_os_api
 # @authenticate_user
 def get_latest_surveys(OS_API=""):
+    print("Inside get_latest_surveys")
     participant = Participant.objects.get(patient_id=request.values['patient_id'])
     study = participant.study
     return json.dumps(study.get_surveys_for_study())
@@ -299,11 +300,12 @@ def get_latest_surveys(OS_API=""):
 ################################################################################
 
 
-@mobile_api.route('/get_params', methods=['GET','POST'])
-@mobile_api.route('/get_params/ios/', methods=['GET','POST'])
+@mobile_api.route('/get_study_params', methods=['GET','POST'])
+@mobile_api.route('/get_study_params/ios/', methods=['GET','POST'])
 @determine_os_api
-def get_params(OS_API=""):
-    print("Inside get_params api")
+# @authenticate_user_ignore_password
+def get_study_params(OS_API=""):
+    print("Inside get_study_params api")
     study = Study.objects.get(id=2)
     params = study.as_dict()
     params.update(study.get_study_device_settings().as_dict())
