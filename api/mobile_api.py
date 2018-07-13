@@ -303,6 +303,7 @@ def get_latest_surveys(OS_API=""):
 @mobile_api.route('/get_params/ios/', methods=['GET','POST'])
 @determine_os_api
 def get_params(OS_API=""):
+    print("Inside get_params api")
     study = Study.objects.get(id=2)
     params = study.as_dict()
     params.update(study.get_study_device_settings().as_dict())
