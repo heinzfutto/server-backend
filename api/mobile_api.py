@@ -9,6 +9,7 @@ from werkzeug.exceptions import BadRequestKeyError
 from config.constants import ALLOWED_EXTENSIONS, DEVICE_IDENTIFIERS_HEADER
 from config.settings import IS_STAGING
 from database.models import FileToProcess, Participant, UploadTracking
+from database.study_models import DeviceSettings, Participant, Researcher, Study, Survey, SurveyArchive
 from libs.android_error_reporting import send_android_error_report
 from libs.encryption import decrypt_device_file, HandledError
 from libs.http_utils import determine_os_api
