@@ -58,7 +58,7 @@ class Study(AbstractModel):
 
     def get_surveys_for_study(self):
         survey_json_list = []
-        for survey in self.surveys.all(deleted=false):
+        for survey in self.surveys.filter(deleted=false):
             survey_dict = survey.as_native_python()
             # Make the dict look like the old Mongolia-style dict that the frontend is expecting
             survey_dict.pop('id')
