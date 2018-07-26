@@ -17,8 +17,8 @@ WEEKLY = "weekly"
 VALID_ARGS = [FIVE_MINUTES, HOURLY, FOUR_HOURLY, DAILY, WEEKLY]
 
 TASKS = {
-    FIVE_MINUTES: [process_file_chunks],
-    HOURLY: [],
+    FIVE_MINUTES: [],
+    HOURLY: [process_file_chunks],
     FOUR_HOURLY: [],
     DAILY: [],
     WEEKLY: []
