@@ -8,5 +8,5 @@ import datetime
 from libs.file_processing import process_file_chunks
 
 if __name__ == "__main__":
-	print("Running at: " + datetime.datetime.now())
+	print("Running at: " + str(datetime.datetime.now()))
 	process_file_chunks()
