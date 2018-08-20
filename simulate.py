@@ -26,4 +26,13 @@ def copy_and_insert(target_user_id, origin_user_id):
         print("finishe file:", destin_path)
 
 if __name__ == '__main__':
-    copy_and_insert("SG00146", "SG00144")
+    print("Start copy.")
+    simulated_users = ['SG00'+str(x) for x in range(149, 175)]
+    simulated_users.insert(0, 'SG00146')
+    for user in simulated_users[:9]:
+        copy_and_insert(user, "SG00144")
+    for user in simulated_users[9:18]:
+        copy_and_insert(user, 'SG00143')
+    for user in simulated_users[18:]:
+        copy_and_insert(user, 'n11fjdyt')
+    print("Finish copy.")
