@@ -33,7 +33,7 @@ def process_file_chunks():
     This is primarily called manually during testing and debugging.
     """
     # Initialize the process and ensure there is no other process running at the same time
-    error_handler = ErrorHandler()
+    # error_handler = ErrorHandler()
     # if FileProcessLock.islocked():
     #    raise ProcessingOverlapError("Data processing overlapped with a previous data indexing run.")
     FileProcessLock.unlock()
@@ -71,7 +71,7 @@ def process_file_chunks():
     finally:
         FileProcessLock.unlock()
 
-    error_handler.raise_errors()
+    # error_handler.raise_errors()
     raise EverythingWentFine(DATA_PROCESSING_NO_ERROR_STRING)
 
 
