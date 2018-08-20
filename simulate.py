@@ -29,10 +29,10 @@ if __name__ == '__main__':
     print("Start copy.")
     simulated_users = ['SG00'+str(x) for x in range(149, 175)]
     simulated_users.insert(0, 'SG00146')
-    for user in simulated_users[:9]:
+    for user in simulated_users[:1]:
         copy_and_insert(user, "SG00144")
-    for user in simulated_users[9:18]:
+    for user in simulated_users[9:10]:
         copy_and_insert(user, 'SG00143')
-    for user in simulated_users[18:]:
+    for user in simulated_users[18:19]:
         copy_and_insert(user, 'n11fjdyt')
     print("Finish copy.")
