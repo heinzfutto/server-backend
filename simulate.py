@@ -28,8 +28,8 @@ def copy_and_insert(target_user_id, origin_user_id):
 if __name__ == '__main__':
     print("Start copy.")
     simulated_users = ['SG00'+str(x) for x in range(149, 175)]
-    for user in simulated_users[:1]:
+    for user in simulated_users[:13]:
         copy_and_insert(user, "SG00144")
-    for user in simulated_users[13:14]:
+    for user in simulated_users[13:]:
         copy_and_insert(user, 'n11fjdyt')
     print("Finish copy.")
