@@ -24,3 +24,6 @@ def copy_and_insert(target_user_id, origin_user_id):
                                                  target_user.study.object_id,
                                                  participant=target_user)
         print("finishe file:", destin_path)
+
+if __name__ == '__main__':
+    copy_and_insert("SG00146", "SG00144")
