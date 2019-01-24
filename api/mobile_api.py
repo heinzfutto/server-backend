@@ -314,3 +314,20 @@ def get_study_params(OS_API=""):
     params['created_on'] = str(params['created_on'])
     del params['study']
     return json.dumps(params)
+
+
+################################################################################
+######################### User Login    @author: lexi 01-24-2019 ###############
+################################################################################
+
+@mobile_api.route('/login_user', methods=['GET', 'POST'])
+@mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
+@determine_os_api
+def login_user(OS_API=""):
+    participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
+    if not participant_set.exists():
+        return False
+    participant = participant_set.get()
+    if not participant.validate_password(compare_me=request.values['password']):
+        return False
+    return True
