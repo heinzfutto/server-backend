@@ -324,7 +324,7 @@ def get_study_params(OS_API=""):
 @mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
 @determine_os_api
 def login_user(OS_API=""):
-    return abort(200)
+    return 200
     # participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
     # if not participant_set.exists():
     #     return abort(404)
