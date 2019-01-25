@@ -324,11 +324,91 @@ def get_study_params(OS_API=""):
 @mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
 @determine_os_api
 def login_user(OS_API=""):
-    print("Inside get_study_params api")
-    study = Study.objects.get(id=2)
-    params = study.as_dict()
-    params.update(study.get_study_device_settings().as_dict())
-    params['last_updated'] = str(params['last_updated'])
-    params['created_on'] = str(params['created_on'])
-    del params['study']
-    return json.dumps(params)
+    patient_id = request.values['patient_id']
+    phone_number = request.values['phone_number']
+    device_id = request.values['device_id']
+
+    # These values may not be returned by earlier versions of the beiwe app
+    try:
+        device_os = request.values['device_os']
+    except BadRequestKeyError:
+        device_os = "none"
+    try:
+        os_version = request.values['os_version']
+    except BadRequestKeyError:
+        os_version = "none"
+    try:
+        product = request.values["product"]
+    except BadRequestKeyError:
+        product = "none"
+    try:
+        brand = request.values["brand"]
+    except BadRequestKeyError:
+        brand = "none"
+    try:
+        hardware_id = request.values["hardware_id"]
+    except BadRequestKeyError:
+        hardware_id = "none"
+    try:
+        manufacturer = request.values["manufacturer"]
+    except BadRequestKeyError:
+        manufacturer = "none"
+    try:
+        model = request.values["model"]
+    except BadRequestKeyError:
+        model = "none"
+    try:
+        beiwe_version = request.values["beiwe_version"]
+    except BadRequestKeyError:
+        beiwe_version = "none"
+    # This value may not be returned by later versions of the beiwe app.
+    try:
+        mac_address = request.values['bluetooth_id']
+    except BadRequestKeyError:
+        mac_address = "none"
+
+    user = Participant.objects.get(patient_id=patient_id)
+    study_id = user.study.object_id
+
+    if user.device_id and user.device_id != request.values['device_id']:
+        # CASE: this patient has a registered a device already and it does not match this device.
+        #   They need to contact the study and unregister their their other device.  The device
+        #   will receive a 405 error and should alert the user accordingly.
+        # Provided a user does not completely reset their device (which resets the device's
+        # unique identifier) they user CAN reregister an existing device, the unlock key they
+        # need to enter to at registration is their old password.
+        # KG: 405 is good for IOS and Android, no need to check OS_API
+        return abort(405)
+
+    if user.os_type and user.os_type != OS_API:
+        # CASE: this patient has registered, but the user was previously registered with a
+        # different device type. To keep the CSV munging code sane and data consistent (don't
+        # cross the iOS and Android data streams!) we disallow it.
+        return abort(400)
+
+    # At this point the device has been checked for validity and will be registered successfully.
+    # Any errors after this point will be server errors and return 500 codes. the final return
+    # will be the encryption key associated with this user.
+
+    # Upload the user's various identifiers.
+    unix_time = str(calendar.timegm(time.gmtime()))
+    file_name = patient_id + '/identifiers_' + unix_time + ".csv"
+
+    # Construct a manual csv of the device attributes
+    file_contents = (DEVICE_IDENTIFIERS_HEADER + "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" %
+                     (patient_id, mac_address, phone_number, device_id, device_os,
+                      os_version, product, brand, hardware_id, manufacturer, model,
+                      beiwe_version))
+    # print(file_contents + "\n")
+    s3_upload(file_name, file_contents, study_id)
+    FileToProcess.append_file_for_processing(file_name, user.study.object_id, participant=user)
+
+    # set up device.
+    user.set_device(device_id)
+    user.set_os_type(OS_API)
+    user.set_password(request.values['new_password'])
+    device_settings = user.study.device_settings.as_native_python()
+    device_settings.pop('_id', None)
+    return_obj = {'client_public_key': get_client_public_key_string(patient_id, study_id),
+                  'device_settings': device_settings}
+    return json.dumps(return_obj), 200
