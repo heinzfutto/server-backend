@@ -326,8 +326,8 @@ def get_study_params(OS_API=""):
 def login_user(OS_API=""):
     participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
     if not participant_set.exists():
-        return False
+        return abort(404)
     participant = participant_set.get()
     if not participant.validate_password(compare_me=request.values['password']):
-        return False
-    return True
+        return abort(404)
+    return abort(200)
