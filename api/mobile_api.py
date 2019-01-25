@@ -18,7 +18,7 @@ from libs.s3 import s3_upload, get_client_public_key_string, get_client_private_
 from libs.security import OurBase64Error
 from libs.sentry import make_sentry_client
 from libs.user_authentication import (authenticate_user, authenticate_user_registration,
-    authenticate_user_ignore_password)
+                                      authenticate_user_ignore_password, authenticate_global_user)
 
 ################################################################################
 ############################# GLOBALS... #######################################
@@ -316,7 +316,6 @@ def get_study_params(OS_API=""):
     return json.dumps(params)
 
 
-
 ################################################################################
 ######################### User Login    @author: lexi 01-24-2019 ###############
 ################################################################################
@@ -328,4 +327,3 @@ def get_study_params(OS_API=""):
 def login_user(OS_API=""):
     return_obj = {'auth_status':'True'}
     return json.dumps(return_obj), 200
-

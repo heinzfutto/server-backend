@@ -182,7 +182,6 @@ def correct_for_basic_auth():
     return
 
 
-
 def global_auth():
     """
     author: lexi 01-24-2019
