@@ -59,7 +59,10 @@ def authenticate_user(some_function):
 
 
 def authenticate_global_user(some_function):
-    """Check if user exists, check if the provided passwords match."""
+    """
+    author: lexi 01-24-2019
+    Check if user exists, check if the provided passwords match.
+    """
     @functools.wraps(some_function)
     def authenticate_and_call(*args, **kwargs):
         global_auth()
@@ -70,7 +73,10 @@ def authenticate_global_user(some_function):
 
 
 def validate_global_post():
-    """Check if user exists, check if the provided passwords match."""
+    """
+    author: lexi 01-24-2019
+    Check if user exists, check if the provided passwords match.
+    """
     # print "user info:  ", request.values.items()
     # print "file info:  ", request.files.items()
     if ("patient_id" not in request.values
@@ -177,6 +183,23 @@ def correct_for_basic_auth():
 
 def global_auth():
     """
+    author: lexi 01-24-2019
+
+    Global auth is used in IOS.
+
+    If basic authentication exists and is in the correct format, move the patient_id,
+    and password into request.values for processing by the existing user
+    authentication functions.
+
+    Flask automatically parses a Basic authentication header into request.authorization
+
+    Parse out the patient_id from username, and then store patient_id and
+    password as if they were passed as parameters (into request.values)
+
+    Note:  Because request.values is immutable in Flask, copy it and replace with a mutable dict
+    first.
+
+    Check if user exists, check if the provided passwords match.
     """
 
     auth = request.authorization
