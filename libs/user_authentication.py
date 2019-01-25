@@ -61,7 +61,7 @@ def authenticate_user(some_function):
 def authenticate_global_user(some_function):
     @functools.wraps(some_function)
     def authenticate_and_call(*args, **kwargs):
-        global_auth()
+        # global_auth()
         if validate_global_post():
             return some_function(*args, **kwargs)
         return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
@@ -191,3 +191,4 @@ def global_auth():
             replace_dict['password'] = auth.password
         request.values = replace_dict
     return
+
