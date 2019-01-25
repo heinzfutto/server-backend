@@ -320,10 +320,11 @@ def get_study_params(OS_API=""):
 ######################### User Login    @author: lexi 01-24-2019 ###############
 ################################################################################
 
-@mobile_api.route('/login_user', methods=['GET', 'POST'])
-@mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
+@mobile_api.route('/authorization_user', methods=['GET', 'POST'])
+@mobile_api.route('/authorization_user/ios/', methods=['GET', 'POST'])
 @determine_os_api
 @authenticate_global_user
 def login_user(OS_API=""):
-    return_obj = {'status':'True'}
-    return json.dumps(return_obj), 200
+    return 200
+    # return_obj = {'auth_status':'True'}
+    # return json.dumps(return_obj), 200

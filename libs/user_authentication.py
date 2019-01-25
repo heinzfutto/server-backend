@@ -61,7 +61,7 @@ def authenticate_user(some_function):
 def authenticate_global_user(some_function):
     @functools.wraps(some_function)
     def authenticate_and_call(*args, **kwargs):
-        # global_auth()
+        global_auth()
         return_num = validate_global_post()
         if return_num == 0:
             return some_function(*args, **kwargs)
