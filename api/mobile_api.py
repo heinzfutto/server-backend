@@ -2,7 +2,7 @@ import calendar
 import time
 
 from django.utils import timezone
-from flask import Blueprint, request, abort, render_template, json
+from flask import Blueprint, request, abort, render_template, json,Response
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequestKeyError
 
@@ -322,9 +322,11 @@ def get_study_params(OS_API=""):
 
 @mobile_api.route('/login_user', methods=['GET', 'POST'])
 @mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
-@determine_os_api
+# @determine_os_api
 def login_user(OS_API=""):
-    return 200
+    patient_id = request.values['patient_id']
+    password = request.values['password']
+    return Response(200)
     # participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
     # if not participant_set.exists():
     #     return abort(404)
