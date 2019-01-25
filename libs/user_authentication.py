@@ -59,18 +59,13 @@ def authenticate_user(some_function):
 
 
 def authenticate_global_user(some_function):
+    """Check if user exists, check if the provided passwords match."""
     @functools.wraps(some_function)
     def authenticate_and_call(*args, **kwargs):
         global_auth()
-        return_num = validate_global_post()
-        if return_num == 0:
+        if validate_global_post():
             return some_function(*args, **kwargs)
-        elif return_num == 1:
-            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
-        elif return_num == 2:
-            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 406)
-        else:
-            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 405)
+        return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
     return authenticate_and_call
 
 
@@ -80,14 +75,14 @@ def validate_global_post():
     # print "file info:  ", request.files.items()
     if ("patient_id" not in request.values
             or "password" not in request.values):
-        return 1
+        return False
     participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
     if not participant_set.exists():
-        return 2
+        return False
     participant = participant_set.get()
     if not participant.validate_password(request.values['password']):
-        return 3
-    return 0
+        return False
+    return True
 
 
 def validate_post():
@@ -197,4 +192,3 @@ def global_auth():
             replace_dict['password'] = auth.password
         request.values = replace_dict
     return
-

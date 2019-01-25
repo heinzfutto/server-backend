@@ -2,14 +2,14 @@ import calendar
 import time
 
 from django.utils import timezone
-from flask import Blueprint, request, abort, render_template, json,Response
+from flask import Blueprint, request, abort, render_template, json
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequestKeyError
 
 from config.constants import ALLOWED_EXTENSIONS, DEVICE_IDENTIFIERS_HEADER
 from config.settings import IS_STAGING
-from database.models import FileToProcess, Participant, UploadTracking
-from database.study_models import DeviceSettings, Participant, Researcher, Study, Survey, SurveyArchive
+from database.models import FileToProcess,UploadTracking
+from database.study_models import Participant, Study
 from libs.android_error_reporting import send_android_error_report
 from libs.encryption import decrypt_device_file, HandledError
 from libs.http_utils import determine_os_api
@@ -325,6 +325,5 @@ def get_study_params(OS_API=""):
 @determine_os_api
 @authenticate_global_user
 def login_user(OS_API=""):
-    return 200
-    # return_obj = {'auth_status':'True'}
-    # return json.dumps(return_obj), 200
+    return_obj = {'auth_status':'True'}
+    return json.dumps(return_obj), 200
