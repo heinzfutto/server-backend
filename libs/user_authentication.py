@@ -62,26 +62,32 @@ def authenticate_global_user(some_function):
     @functools.wraps(some_function)
     def authenticate_and_call(*args, **kwargs):
         # global_auth()
-        if validate_global_post():
+        return_num = validate_global_post()
+        if return_num == 0:
             return some_function(*args, **kwargs)
-        return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
+        elif return_num == 1:
+            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
+        elif return_num == 2:
+            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 404)
+        else:
+            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 405)
     return authenticate_and_call
 
 
 def validate_global_post():
-    """Check if user exists, check if the provided passwords match, and if the device id matches."""
+    """Check if user exists, check if the provided passwords match."""
     # print "user info:  ", request.values.items()
     # print "file info:  ", request.files.items()
     if ("patient_id" not in request.values
             or "password" not in request.values):
-        return False
+        return 1
     participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
     if not participant_set.exists():
-        return False
+        return 2
     participant = participant_set.get()
     if not participant.validate_password(request.values['password']):
-        return False
-    return True
+        return 3
+    return 0
 
 
 def validate_post():
