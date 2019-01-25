@@ -322,18 +322,13 @@ def get_study_params(OS_API=""):
 
 @mobile_api.route('/login_user', methods=['GET', 'POST'])
 @mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
-# @determine_os_api
+@determine_os_api
 def login_user(OS_API=""):
-    # patient_id = request.values['patient_id']
-    # password = request.values['password']
-    return_obj = {'user_id':request.values['patient_id'],
-                  'password':request.values['password']}
-    return json.dumps(return_obj), 200
-    # return Response(200)
-    # participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
-    # if not participant_set.exists():
-    #     return abort(404)
-    # participant = participant_set.get()
-    # if not participant.validate_password(compare_me=request.values['password']):
-    #     return abort(404)
-    # return abort(200)
+    print("Inside get_study_params api")
+    study = Study.objects.get(id=2)
+    params = study.as_dict()
+    params.update(study.get_study_device_settings().as_dict())
+    params['last_updated'] = str(params['last_updated'])
+    params['created_on'] = str(params['created_on'])
+    del params['study']
+    return json.dumps(params)
