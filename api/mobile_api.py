@@ -323,6 +323,7 @@ def get_study_params(OS_API=""):
 @mobile_api.route('/login_user', methods=['GET', 'POST'])
 @mobile_api.route('/login_user/ios/', methods=['GET', 'POST'])
 @determine_os_api
+@authenticate_user_registration
 def login_user(OS_API=""):
     patient_id = request.values['patient_id']
     phone_number = request.values['phone_number']
