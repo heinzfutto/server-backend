@@ -68,7 +68,7 @@ def authenticate_global_user(some_function):
         elif return_num == 1:
             return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
         elif return_num == 2:
-            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 404)
+            return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 406)
         else:
             return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 405)
     return authenticate_and_call
