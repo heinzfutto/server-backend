@@ -8,8 +8,8 @@ from werkzeug.exceptions import BadRequestKeyError
 
 from config.constants import ALLOWED_EXTENSIONS, DEVICE_IDENTIFIERS_HEADER
 from config.settings import IS_STAGING
-from database.models import FileToProcess, Participant, UploadTracking
-from database.study_models import DeviceSettings, Participant, Researcher, Study, Survey, SurveyArchive
+from database.models import FileToProcess,UploadTracking
+from database.study_models import Participant, Study
 from libs.android_error_reporting import send_android_error_report
 from libs.encryption import decrypt_device_file, HandledError
 from libs.http_utils import determine_os_api
@@ -314,3 +314,18 @@ def get_study_params(OS_API=""):
     params['created_on'] = str(params['created_on'])
     del params['study']
     return json.dumps(params)
+
+
+
+################################################################################
+######################### User Login    @author: lexi 01-24-2019 ###############
+################################################################################
+
+@mobile_api.route('/authorization_user', methods=['GET', 'POST'])
+@mobile_api.route('/authorization_user/ios/', methods=['GET', 'POST'])
+@determine_os_api
+@authenticate_global_user
+def login_user(OS_API=""):
+    return_obj = {'auth_status':'True'}
+    return json.dumps(return_obj), 200
+
