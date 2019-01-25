@@ -58,6 +58,32 @@ def authenticate_user(some_function):
     return authenticate_and_call
 
 
+def authenticate_global_user(some_function):
+    @functools.wraps(some_function)
+    def authenticate_and_call(*args, **kwargs):
+        global_auth()
+        if validate_global_post():
+            return some_function(*args, **kwargs)
+        return abort(401 if (kwargs["OS_API"] == Participant.IOS_API) else 403)
+    return authenticate_and_call
+
+
+def validate_global_post():
+    """Check if user exists, check if the provided passwords match, and if the device id matches."""
+    # print "user info:  ", request.values.items()
+    # print "file info:  ", request.files.items()
+    if ("patient_id" not in request.values
+            or "password" not in request.values):
+        return False
+    participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
+    if not participant_set.exists():
+        return False
+    participant = participant_set.get()
+    if not participant.validate_password(request.values['password']):
+        return False
+    return True
+
+
 def validate_post():
     """Check if user exists, check if the provided passwords match, and if the device id matches."""
     # print "user info:  ", request.values.items()
@@ -142,6 +168,25 @@ def correct_for_basic_auth():
             replace_dict['patient_id'] = username_parts[0]
         if "device_id" not in replace_dict:
             replace_dict['device_id'] = username_parts[1]
+        if "password" not in replace_dict:
+            replace_dict['password'] = auth.password
+        request.values = replace_dict
+    return
+
+
+def global_auth():
+    """
+    """
+
+    auth = request.authorization
+    if not auth:
+        return
+
+    username_parts = auth.username.split('@')
+    if len(username_parts) == 1:
+        replace_dict = MultiDict(request.values.to_dict())
+        if "patient_id" not in replace_dict:
+            replace_dict['patient_id'] = username_parts[0]
         if "password" not in replace_dict:
             replace_dict['password'] = auth.password
         request.values = replace_dict
