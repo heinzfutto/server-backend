@@ -325,4 +325,5 @@ def get_study_params(OS_API=""):
 @determine_os_api
 @authenticate_global_user
 def login_user(OS_API=""):
-    return 200
+    return_obj = {'status':'True'}
+    return json.dumps(return_obj), 200
