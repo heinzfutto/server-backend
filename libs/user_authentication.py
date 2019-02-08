@@ -79,7 +79,6 @@ def validate_global_post():
     """
     # print "user info:  ", request.values.items()
     # print "file info:  ", request.files.items()
-    return False
     if ("patient_id" not in request.values
             or "password" not in request.values):
         return False
