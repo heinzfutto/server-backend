@@ -58,7 +58,6 @@ def authenticate_user(some_function):
     return authenticate_and_call
 
 
-
 def authenticate_global_user(some_function):
     """
     author: lexi 01-24-2019
@@ -80,6 +79,7 @@ def validate_global_post():
     """
     # print "user info:  ", request.values.items()
     # print "file info:  ", request.files.items()
+    return False
     if ("patient_id" not in request.values
             or "password" not in request.values):
         return False
