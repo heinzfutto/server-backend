@@ -320,10 +320,25 @@ def get_study_params(OS_API=""):
 ######################### User Login    @author: lexi 01-24-2019 ###############
 ################################################################################
 
+# @mobile_api.route('/authorization_user', methods=['GET', 'POST'])
+# @mobile_api.route('/authorization_user/ios/', methods=['GET', 'POST'])
+# @determine_os_api
+# @authenticate_global_user
+# def login_user(OS_API=""):
+#     return_obj = {'auth_status':'False'}
+#     return json.dumps(return_obj), 200
+
 @mobile_api.route('/authorization_user', methods=['GET', 'POST'])
 @mobile_api.route('/authorization_user/ios/', methods=['GET', 'POST'])
 @determine_os_api
-@authenticate_global_user
 def login_user(OS_API=""):
-    return_obj = {'auth_status':'False'}
+    participant_set = Participant.objects.filter(patient_id=request.values['patient_id'])
+    if not participant_set.exists():
+        return_obj = {'auth_status': 'False'}
+        return json.dumps(return_obj), 403
+    participant = participant_set.get()
+    if not participant.validate_password(request.values['password']):
+        return_obj = {'auth_status': 'False'}
+        return json.dumps(return_obj), 405
+    return_obj = {'auth_status':'True'}
     return json.dumps(return_obj), 200
