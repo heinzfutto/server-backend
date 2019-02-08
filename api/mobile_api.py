@@ -338,8 +338,12 @@ def login_user(OS_API=""):
         return json.dumps(return_obj), 403
     participant = participant_set.get()
 
+    if participant_set is None:
+        return_obj = {'auth_status': 'False'}
+        return json.dumps(return_obj), 407
+
     if not participant.validate_password(request.values['password']):
     #     return_obj = {'auth_status': 'False'}
     #     return json.dumps(return_obj), 405
-    return_obj = {'auth_status':participant_set,'auth_status2':request.values['password']}
+    return_obj = {'auth_status':participant_set is None,'auth_status2':request.values['password']}
     return json.dumps(return_obj), 200
