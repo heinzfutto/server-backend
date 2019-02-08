@@ -337,8 +337,9 @@ def login_user(OS_API=""):
         return_obj = {'auth_status': 'False'}
         return json.dumps(return_obj), 403
     participant = participant_set.get()
-    if not participant.validate_password(request.values['password']):
-        return_obj = {'auth_status': 'False'}
-        return json.dumps(return_obj), 405
-    return_obj = {'auth_status':request.values['patient_id'],'auth_status2':request.values['password']}
+
+    # if not participant.validate_password(request.values['password']):
+    #     return_obj = {'auth_status': 'False'}
+    #     return json.dumps(return_obj), 405
+    return_obj = {'auth_status':participant.password,'auth_status2':request.values['password']}
     return json.dumps(return_obj), 200
