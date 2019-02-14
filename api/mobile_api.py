@@ -345,7 +345,7 @@ def login_user(OS_API=""):
     # if not participant.debug_validate_password(request.values['password']):
     #     return_obj = {'auth_status': 'False'}
     #     return json.dumps(return_obj), 405
-    if participant.validate_password(participant,request.values['password']):
+    if participant.validate_password(request.values['password']):
         return_obj = {'auth_status':participant.patient_id,'auth_status2':participant.password}
         return json.dumps(return_obj), 200
     return_obj = {'auth_status': 'False'}
