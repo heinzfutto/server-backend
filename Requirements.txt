@@ -2,7 +2,7 @@ boto==2.48.0
 celery==4.1.0
 boto3==1.4.8
 cronutils>=0.1.9
-Django==1.11.5
+Django==1.11.29
 django-extensions==1.7.8
 Flask==0.12.2
 ipython==5.5.0
